@@ -1,0 +1,135 @@
+.text_button {
+	font-size: 1.6rem;
+	font-family: var(--font-family-1);
+	border: solid 0.2rem var(--color-cells-separator);
+	border-radius: 20rem;
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+	transition-duration: 100ms;
+	transition-property: background-color, color, border-color;
+	transition-timing-function: ease-out;
+	padding: 1rem;
+	width: 100%;
+}
+
+.text_button:active {
+	border-color: var(--color-cells-normal);
+	background-color: var(--color-cells-normal);
+	color: var(--color-background);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.text_button:hover {
+		border-color: var(--color-cells-normal);
+		background-color: var(--color-cells-normal);
+		color: var(--color-background);
+	}
+}
+
+.action_toggle {
+	align-items: center;
+	padding: 0.5rem;
+	border: solid 0.2rem var(--color-cells-separator);
+	background-color: var(--color-background);
+	border-radius: 20rem;
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	transition-property: bottom, opacity;
+	transition-duration: 300ms;
+}
+
+.action_toggle.hidden {
+	bottom: 0;
+	opacity: 0;
+}
+
+.action_toggle:not(.hidden) {
+	bottom: 2rem;
+	opacity: 1;
+}
+
+@keyframes display-floating-bottom-button {
+	0% {
+		bottom: 0;
+		opacity: 0;
+	}
+
+	100% {
+		bottom: 2rem;
+		opacity: 1;
+	}
+}
+
+.action_toggle_button {
+	background-color: var(--color-background);
+	border: none;
+	border-radius: 50%;
+	padding: 1rem;
+	transition-property: background-color, color, border-color;
+	transition-duration: 300ms;
+	aspect-ratio: 1/1;
+	width: 5rem;
+	height: 5rem;
+}
+
+.action_toggle_mark svg {
+	position: relative;
+	left: 0.2rem;
+}
+
+.action_toggle_button:first-child {
+	margin-right: 1rem;
+}
+
+.action_toggle_button.selected {
+	background-color: var(--color-cells-normal);
+}
+
+.action_toggle_button:not(.selected) {
+	background-color: var(--color-background);
+}
+
+.action_toggle_button svg {
+	width: 3rem;
+	min-width: 3rem;
+	height: 3rem;
+	min-height: 3rem;
+	color: var(--color-foreground);
+}
+
+.action_toggle_button.selected svg {
+	color: var(--color-background);
+}
+
+.action_toggle_button:not(.selected) svg {
+	color: var(--color-foreground);
+}
+
+.bottom_buttons {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	padding-top: 1rem;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: calc(100% * var(--height-factor));
+	background-color: var(--color-background);
+	--height-factor: 0.2;
+	animation: 500ms ease forwards dispaly-bottom-buttons;
+}
+
+@keyframes dispaly-bottom-buttons {
+	0% {
+		opacity: 0;
+	}
+	
+	100% {
+		opacity: 1;
+	}
+}
+
+.start_new_game {
+	max-width: 30rem;
+}

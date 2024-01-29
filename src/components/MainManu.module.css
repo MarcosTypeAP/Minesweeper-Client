@@ -1,0 +1,226 @@
+.main_menu {
+	background-color: var(--color-background);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.center_icon {
+	height: 16rem;
+	width: 16rem;
+	color: var(--color-cells-normal);
+	margin-top: 10rem;
+	margin-bottom: 4rem;
+}
+
+@media (max-width: 500px) {
+	.center_icon {
+		margin-top: 10vh;
+	}
+}
+
+.difficulty_chooser {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 30rem;
+	margin-bottom: 3rem;
+}
+
+.difficulties {
+	display: flex;
+	align-items: center;
+	width: 20rem;
+	overflow: hidden;
+	scroll-behavior: smooth;
+}
+
+.difficulties.no_scroll_animation {
+	scroll-behavior: auto !important;
+}
+
+.difficulty {
+	font-size: 1.6rem;
+	font-family: var(--font-family-1);
+	color: var(--color-foreground);
+	min-width: 20rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.button {
+
+}
+
+.icon_button {
+	width: 3.5rem;
+	height: 3.5rem;
+	padding: 0.5rem;
+	border: none;
+	outline: none;
+	border-radius: 50%;
+	color: var(--color-foreground);
+	background-color: var(--color-background);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition-duration: 100ms;
+	transition-property: background-color, color;
+	transition-timing-function: ease-out;
+}
+
+.icon_button:active {
+	background-color: var(--color-cells-normal);
+	color: var(--color-background);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.icon_button:hover {
+		background-color: var(--color-cells-normal);
+		color: var(--color-background);
+	}
+}
+
+.icon_button:not(.hidden) {
+	animation: 200ms ease-in forwards display-arrow-button;
+}
+
+@keyframes display-arrow-button {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+.icon_button.left_arrow svg {
+	position: relative;
+	right: 0.1rem;
+}
+
+.icon_button.right_arrow svg {
+	position: relative;
+	left: 0.1rem;
+}
+
+.icon_button.hidden {
+	animation: 200ms ease-in forwards hide-arrow-button;
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+	border: solid 0.2rem var(--color-cells-normal);
+}
+
+@keyframes hide-arrow-button {
+	100% {
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+
+.icon_button.disabled {
+	visibility: hidden;
+}
+
+.text_button {
+	font-size: 1.6rem;
+	font-family: var(--font-family-1);
+	border: solid 0.2rem var(--color-cells-separator);
+	border-radius: 20rem;
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+	transition-duration: 100ms;
+	transition-property: background-color, color, border-color;
+	transition-timing-function: ease-out;
+	margin-bottom: 2rem;
+	padding: 1rem;
+}
+
+.text_button:active {
+	border-color: var(--color-cells-normal);
+	background-color: var(--color-cells-normal);
+	color: var(--color-background);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.text_button:hover {
+		border-color: var(--color-cells-normal);
+		background-color: var(--color-cells-normal);
+		color: var(--color-background);
+	}
+}
+
+.text_button.large.hidden {
+	animation: 200ms ease-in forwards hide-large-text-button;
+}
+
+@keyframes hide-large-text-button {
+	100% {
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+
+.text_button.large:not(.hidden) {
+	animation: 200ms ease-out forwards display-large-text-button;
+}
+
+@keyframes display-large-text-button {
+	0% {
+		transform: translateY(-1rem);
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+.text_button.large.disabled {
+	visibility: hidden;
+}
+
+.text_button.large {
+	width: 35rem;
+}
+
+@media (max-width: 500px) {
+	.text_button.large {
+		width: 30rem;
+	}
+}
+
+.bottom_buttons {
+	display: flex;
+	align-items: center;
+	position: absolute;
+	bottom: 0;
+}
+
+.bottom_buttons .text_button:not(:last-child) {
+	margin-right: 3rem;
+}
+
+.bottom_buttons .text_button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 4.5rem;
+	height: 4.5rem;
+	width: 7rem;
+	min-width: 7rem;
+}
+
+.bottom_buttons .text_button svg {
+	--svg-size: 2.5rem;
+	min-height: var(--svg-size);
+	height: var(--svg-size);
+	width: var(--svg-size);
+	min-width: var(--svg-size);
+}
+
+.bottom_buttons .text_button.times svg {
+	--svg-size: 2rem;
+}

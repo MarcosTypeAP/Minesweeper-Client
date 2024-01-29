@@ -1,0 +1,216 @@
+.times_page {
+	background-color: var(--color-background);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.page_title {
+	color: var(--color-foreground);
+	font-family: var(--font-family-1);
+	font-size: var(--font-size-8);
+	font-weight: normal;
+	margin: 2rem 0;
+}
+
+.difficulty_chooser {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 30rem;
+	margin-bottom: 2rem;
+}
+
+.difficulties {
+	display: flex;
+	align-items: center;
+	width: 20rem;
+	overflow: hidden;
+	scroll-behavior: smooth;
+}
+
+.difficulties.no_scroll_animation {
+	scroll-behavior: auto !important;
+}
+
+.difficulty {
+	font-size: 1.6rem;
+	font-family: var(--font-family-1);
+	color: var(--color-foreground);
+	min-width: 20rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.button {
+}
+
+.icon_button {
+	width: 3.5rem;
+	height: 3.5rem;
+	padding: 0.5rem;
+	border: none;
+	outline: none;
+	border-radius: 50%;
+	color: var(--color-foreground);
+	background-color: var(--color-background);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition-duration: 100ms;
+	transition-property: background-color, color;
+	transition-timing-function: ease-out;
+}
+
+.icon_button:active {
+	background-color: var(--color-cells-normal);
+	color: var(--color-background);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.icon_button:hover {
+		background-color: var(--color-cells-normal);
+		color: var(--color-background);
+	}
+}
+
+.icon_button:not(.hidden) {
+	animation: 200ms ease-in forwards display-arrow-button;
+}
+
+@keyframes display-arrow-button {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+.icon_button.left_arrow svg {
+	position: relative;
+	right: 0.1rem;
+}
+
+.icon_button.right_arrow svg {
+	position: relative;
+	left: 0.1rem;
+}
+
+.icon_button.hidden {
+	animation: 200ms ease-in forwards hide-arrow-button;
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+	border: solid 0.2rem var(--color-cells-normal);
+}
+
+@keyframes hide-arrow-button {
+	100% {
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+
+.icon_button.disabled {
+	visibility: hidden;
+}
+
+.records_wrapper {
+	overflow-y: scroll;
+}
+
+.records_wrapper::after {
+	content: "";
+	background-color: var(--color-background);
+	position: fixed;
+	width: 100vw;
+	height: 4rem;
+	display: flex;
+	bottom: 0;
+	left: 0;
+}
+
+.records {
+	table-layout: fixed;
+	opacity: 1;
+	transition: opacity 300ms ease;
+	padding-left: 1rem;
+	margin-bottom: 4rem;
+}
+
+.no_records {
+	color: var(--color-foreground);
+	font-size: var(--font-size-3);
+	font-family: var(--font-family-1);
+}
+
+.records.hidden {
+	opacity: 0;
+}
+
+.record {
+}
+
+.record th,
+.record td {
+	color: var(--color-foreground);
+	font-size: var(--font-size-4);
+	font-family: var(--font-family-1);
+}
+
+.record .position {
+	text-align: end;
+	padding-right: 1rem;
+	font-weight: normal;
+}
+
+.record .time {
+	text-align: end;
+	padding-right: 1rem;
+}
+
+.record .date {
+}
+
+.record .delete_record svg {
+	--size: 1.6rem;
+	min-height: var(--size);
+	height: var(--size);
+	min-width: var(--size);
+	width: var(--size);
+}
+
+.record .empty_cell {
+	width: 8rem;
+	max-width: 10vw;
+}
+
+.text_button {
+	font-size: 1.6rem;
+	font-family: var(--font-family-1);
+	border: solid 0.2rem var(--color-cells-separator);
+	border-radius: 20rem;
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+	transition-duration: 100ms;
+	transition-property: background-color, color, border-color;
+	transition-timing-function: ease-out;
+	margin-bottom: 2rem;
+	padding: 1rem;
+}
+
+.text_button:active {
+	border-color: var(--color-cells-normal);
+	background-color: var(--color-cells-normal);
+	color: var(--color-background);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.text_button:hover {
+		border-color: var(--color-cells-normal);
+		background-color: var(--color-cells-normal);
+		color: var(--color-background);
+	}
+}

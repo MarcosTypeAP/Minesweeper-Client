@@ -1,0 +1,8 @@
+.canvas {
+	display: flex;
+	flex-direction: column;
+	transform-origin: top left;
+	position: absolute;
+	border-radius: calc(var(--radius) * var(--rows-cols-ratio)) / var(--radius);
+	--radius: 1.5%;
+}
