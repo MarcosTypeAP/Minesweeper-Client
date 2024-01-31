@@ -49,9 +49,8 @@
 .account_test_credentials {
 	font-family: monospace;
 	font-size: var(--font-size-3);
-	color: var(--color-foreground-alt);
-	background-color: var(--color-background);
-	filter: brightness(1.5);
+	color: var(--color-foreground);
+	background-color: var(--color-cells-separator);
 	padding: 1rem 1.5rem;
 	line-height: 2.2rem;
 	border-radius: 1rem;
