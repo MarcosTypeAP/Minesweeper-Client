@@ -19,6 +19,7 @@ type AccessAccountProps = {
 	getDeviceID: (username?: string) => number | null;
 	setTestAccountCredentials: (username: string, password: string) => void;
 	isTestAccountUsername: (username: string) => boolean;
+	logoutDevice: (deviceID: number, username: string, password: string) => Promise<void>;
 };
 
 type AccessAccountState = {
@@ -242,6 +243,13 @@ export default class AccessAccountComponent implements Component {
 		}
 
 		this.props.setTestAccountCredentials(response.data.username, response.data.password);
+
+		const currDeviceID: number | null = this.props.getDeviceID(response.data.username);
+
+		if (currDeviceID !== null) {
+			await this.props.logoutDevice(currDeviceID, response.data.username, response.data.password);
+		}
+
 		this.handleLogin(response.data.username, response.data.password);
 	}
 

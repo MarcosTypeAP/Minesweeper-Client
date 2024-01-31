@@ -6,7 +6,7 @@ import GameComponent from './components/Game';
 import TimesComponent from './components/Times';
 import SettingsComponent from './components/Settings';
 import AccessAccountComponent from './components/AccessAccount';
-import {getDeviceID, getTestAccountCredentials, isLoggedIn, isTestAccountUsername, logout, makeAuthRequest, refreshTokens, setAuthTokens, setDeviceID, setTestAccountCredentials} from './models/Auth';
+import {getDeviceID, getTestAccountCredentials, isLoggedIn, isTestAccountUsername, logout, makeAuthRequest, refreshTokens, setAuthTokens, setDeviceID, setTestAccountCredentials, logoutDevice} from './models/Auth';
 import {changeSettings, getSettings, resetDefaultSettings} from './models/Settings';
 import {deleteTimeRecord, generateTimeRecords, getTimeRecords, saveTimeRecord, updateTimeRecords} from './models/TimeRecords';
 import {checkSavedGameExists, deleteSavedGame, getSavedGame, getSavedGames, saveGame, updateSavedGames} from './models/Games';
@@ -34,11 +34,11 @@ async function syncDataOnlyGet(): Promise<void> {
 		changeSettings(response.data.settings);
 	}
 
-	if (response.data.timeRecords !== null) {
+	if (response.data.timeRecords.length > 0) {
 		updateTimeRecords(response.data.timeRecords);
 	}
 
-	if (response.data.game !== null) {
+	if (response.data.game.length > 0) {
 		updateSavedGames(response.data.games);
 	}
 }
@@ -78,13 +78,8 @@ async function syncData(): Promise<void> {
 		changeSettings(response.data.settings);
 	}
 
-	if (response.data.timeRecords !== null) {
-		updateTimeRecords(response.data.timeRecords);
-	}
-
-	if (response.data.game !== null) {
-		updateSavedGames(response.data.games);
-	}
+	updateTimeRecords(response.data.timeRecords);
+	updateSavedGames(response.data.games);
 }
 
 const $header: HTMLHeadingElement = document.querySelector("#app #header")!;
@@ -307,6 +302,7 @@ const accessAccountComponent: AccessAccountComponent = new AccessAccountComponen
 		getDeviceID,
 		setTestAccountCredentials,
 		isTestAccountUsername,
+		logoutDevice,
 	}
 );
 

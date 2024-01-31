@@ -114,10 +114,12 @@ export function setAuthTokens(accessToken_: string | null, refreshToken: string 
 	}
 }
 
-export function logout(): void {
-	
-	setAuthTokens(null, null);
+export async function logout(): Promise<void> {
 
+	setAuthTokens(null, null);
+	setDeviceID(null);
+	setTestAccountCredentials(null, null);
+	
 	const refreshToken: string | null = getRefreshToken();
 
 	if (!refreshToken) {
@@ -126,17 +128,28 @@ export function logout(): void {
 
 	const requestData = {refreshToken};
 
-	makeRequest(LOGOUT_URL, "POST", JSON.stringify(requestData))
-		.then((response) => {
-			if (response.error) {
-				console.error("Error loggin out:", response.data);
-				return;
-			}
+	const response: ApiResponse = await makeRequest(LOGOUT_URL, "POST", JSON.stringify(requestData));
 
-			setAuthTokens(null, null);
-			setDeviceID(null);
-			setTestAccountCredentials(null, null);
-		})
+	if (response.error) {
+		console.error("Error loggin out:", response.data);
+		return;
+	}
+}
+
+export async function logoutDevice(deviceID: number, username: string, password: string): Promise<void> {
+	
+	setAuthTokens(null, null);
+	setDeviceID(null, username);
+	setTestAccountCredentials(null, null);
+
+	const requestData = {username, password};
+
+	const response: ApiResponse = await makeRequest(LOGOUT_URL + `/${deviceID}`, "POST", JSON.stringify(requestData))
+
+	if (response.error) {
+		console.error("Error loggin out:", response.data);
+		return;
+	}
 }
 
 function getRefreshToken(): string | null {
