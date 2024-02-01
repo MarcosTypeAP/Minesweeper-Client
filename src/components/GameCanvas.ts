@@ -1,6 +1,7 @@
-import styles from "./GameCanvas.module.css";
 import Minesweeper, {GridCell, GridCellPosition} from "../models/Minesweeper";
+import {getSettings} from "../models/Settings";
 import {easeOutBack, easeOutQuart} from "../timingFunctions";
+import styles from "./GameCanvas.module.css";
 
 const colors: Hex6Colors = {
 	background: "#1B1B1B",
@@ -114,7 +115,6 @@ type GameCanvasState = {
 type GameCanvasProps = {
 	game: Minesweeper;
 	onClick: (row: number, col: number, button: number) => void;
-	getSettings: () => GameSettings;
 	onLowFps: (minFps: number) => void;
 };
 
@@ -157,7 +157,7 @@ export default class GameCanvasComponent implements Component {
 			tapToBeginAnimationTimeElapsed: 0,
 			tapToBeginAnimationDuration: 0,
 			areMinesRevelated: false,
-			settings: this.props.getSettings(),
+			settings: getSettings(),
 		};
 	}
 

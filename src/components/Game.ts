@@ -1,10 +1,14 @@
+import getFlagSVG from "../icons/Flag";
+import getMineSVG from "../icons/Mine";
+import {haveDisplayedLowFpsPopup, openSettings, setLowFpsPupupDisplayed} from "../main";
+import {deleteSavedGame, saveGame} from "../models/Games";
+import Minesweeper, {GridCell, GridCellPosition, MinesweeperReturnCode} from "../models/Minesweeper";
+import {getSettings} from "../models/Settings";
+import {saveTimeRecord} from "../models/TimeRecords";
+import {getFormatedTime} from "../utils";
 import styles from "./Game.module.css";
-import Minesweeper, {GridCell, GridCellPosition, MinesweeperDifficulty, MinesweeperReturnCode} from "../models/Minesweeper";
 import GameCanvasComponent, {EightDirections} from "./GameCanvas";
 import PopupComponent from "./Popup";
-import {getFormatedTime} from "../utils";
-import getMineSVG from "../icons/Mine";
-import getFlagSVG from "../icons/Flag";
 
 // CSS order (0 = up)
 const eightDirections: EightDirections = [
@@ -28,13 +32,6 @@ type GameProps = {
 	renderTimeElapsed: (game: Minesweeper) => void;
 	renderMinesCounter: (game: Minesweeper) => void;
 	renderStartNewGame: () => void;
-	deleteSavedGame: (game: MinesweeperDifficulty) => void;
-	saveGame: (game: Minesweeper, should_sync?: boolean) => void;
-	saveTimeRecord: (difficulty: MinesweeperDifficulty, time: number, date?: Date) => void;
-	getSettings: () => GameSettings;
-	openSettings: () => void;
-	haveDisplayedLowFpsPopup: () => boolean;
-	setLowFpsPupupDisplayed: () => void;
 };
 
 type GameDOMElements = {
@@ -126,7 +123,6 @@ export default class GameComponent implements Component {
 				{
 					game: this.props.game,
 					onClick: this.handleClick,
-					getSettings: this.props.getSettings,
 					onLowFps: this.handleLowFps,
 				}
 			),
@@ -136,8 +132,8 @@ export default class GameComponent implements Component {
 
 			isReadyToHandleClicks: false,
 
-			settings: this.props.getSettings(),
-			currAction: this.props.getSettings().defaultAction,
+			settings: getSettings(),
+			currAction: getSettings().defaultAction,
 		};
 	}
 
@@ -234,11 +230,11 @@ export default class GameComponent implements Component {
 
 	private handleLowFps = (minFps: number): void => {
 
-		if (!this.props.game.hasStarted() || this.props.haveDisplayedLowFpsPopup()) {
+		if (!this.props.game.hasStarted() || haveDisplayedLowFpsPopup()) {
 			return;
 		}
 
-		this.props.setLowFpsPupupDisplayed();
+		setLowFpsPupupDisplayed();
 
 		const popup: PopupComponent = new PopupComponent(
 			this.$root,
@@ -247,7 +243,7 @@ export default class GameComponent implements Component {
 				message: "Try lowering the resolution in settings.",
 				buttonText1: "Close",
 				buttonText2: "Go Settings",
-				onClick2: this.props.openSettings,
+				onClick2: openSettings,
 			}
 		);
 
@@ -882,9 +878,8 @@ export default class GameComponent implements Component {
 
 		const game: Minesweeper = this.props.game;
 
-		this.props.saveTimeRecord(game.difficulty, game.getElapsedSeconds());
-
-		this.props.deleteSavedGame(game.difficulty);
+		saveTimeRecord(game.difficulty, game.getElapsedSeconds());
+		deleteSavedGame(game.difficulty);
 	}
 
 	private handleLostGame(dugMinePos: GridCellPosition): void {
@@ -912,7 +907,7 @@ export default class GameComponent implements Component {
 			}, this.END_GAME_ZOOM_OUT_DURATION);
 		}, 400);
 
-		this.props.deleteSavedGame(this.props.game.difficulty);
+		deleteSavedGame(this.props.game.difficulty);
 	}
 
 	private handleMarkCell = (cellPos: GridCellPosition): void => {
@@ -934,7 +929,7 @@ export default class GameComponent implements Component {
 
 			this.props.renderMinesCounter(game);
 
-			this.props.saveGame(game);
+			saveGame(game);
 
 			if (isMarked) {
 				this.state.gameCanvas.unmarkCell(cellPos);
@@ -967,7 +962,6 @@ export default class GameComponent implements Component {
 				if (game.grid[row][col].isMarked) {
 					markedCellsToRender.push({row, col});
 					continue;
-					// gameCanvas.markCell({row, col});
 				}
 			}
 		}
@@ -1010,7 +1004,7 @@ export default class GameComponent implements Component {
 
 			gameCanvas.digCells(cellPos, dugCells!);
 
-			this.props.saveGame(game);
+			saveGame(game);
 
 			if (returnCode === MinesweeperReturnCode.HAS_WON) {
 				this.handleWonGame();

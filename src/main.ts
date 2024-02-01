@@ -1,15 +1,15 @@
-import './style.css'
-import Minesweeper, {MinesweeperDifficulty} from './models/Minesweeper'
+import './style.css';
+import Minesweeper, {MinesweeperDifficulty} from './models/Minesweeper';
 import HeaderComponent from './components/Header';
 import MainMenuComponent from './components/MainManu';
 import GameComponent from './components/Game';
 import TimesComponent from './components/Times';
 import SettingsComponent from './components/Settings';
 import AccessAccountComponent from './components/AccessAccount';
-import {getDeviceID, getTestAccountCredentials, isLoggedIn, isTestAccountUsername, logout, makeAuthRequest, refreshTokens, setAuthTokens, setDeviceID, setTestAccountCredentials, logoutDevice} from './models/Auth';
-import {changeSettings, getSettings, resetDefaultSettings} from './models/Settings';
-import {deleteTimeRecord, generateTimeRecords, getTimeRecords, saveTimeRecord, updateTimeRecords} from './models/TimeRecords';
-import {checkSavedGameExists, deleteSavedGame, getSavedGame, getSavedGames, saveGame, updateSavedGames} from './models/Games';
+import {isLoggedIn, makeAuthRequest, refreshTokens} from './models/Auth';
+import {changeSettings, getSettings} from './models/Settings';
+import {getTimeRecords, updateTimeRecords} from './models/TimeRecords';
+import {getSavedGame, getSavedGames, saveGame, updateSavedGames} from './models/Games';
 import {API_URL} from './models/Api';
 
 const SYNC_DATA_URL = API_URL + "/users/sync"
@@ -17,7 +17,7 @@ const SYNC_DATA_URL = API_URL + "/users/sync"
 const LAST_DIFFICULTY_STORAGE_KEY = "ms-last-difficulty";
 const LOW_FPS_POPUP_STORAGE_KEY = "ms-low-fps-popup";
 
-async function syncDataOnlyGet(): Promise<void> {
+export async function syncDataOnlyGet(): Promise<void> {
 
 	if (!isLoggedIn()) {
 		return;
@@ -43,7 +43,7 @@ async function syncDataOnlyGet(): Promise<void> {
 	}
 }
 
-async function syncData(): Promise<void> {
+export async function syncData(): Promise<void> {
 
 	if (!isLoggedIn()) {
 		return;
@@ -133,7 +133,7 @@ window.addEventListener("popstate", () => {
 	}
 });
 
-function getLastChosenDifficulty(): MinesweeperDifficulty {
+export function getLastChosenDifficulty(): MinesweeperDifficulty {
 	
 	const storedDifficulty: string | null = localStorage.getItem(LAST_DIFFICULTY_STORAGE_KEY);
 
@@ -174,13 +174,6 @@ function startGame(difficulty: MinesweeperDifficulty, resume: boolean): void {
 			renderTimeElapsed: headerComponent.renderTimeElapsed,
 			renderMinesCounter: headerComponent.renderMines,
 			renderStartNewGame: () => startGame(difficulty, false),
-			saveGame,
-			deleteSavedGame,
-			saveTimeRecord,
-			getSettings,
-			openSettings,
-			haveDisplayedLowFpsPopup,
-			setLowFpsPupupDisplayed,
 		}
 	);
 
@@ -190,12 +183,12 @@ function startGame(difficulty: MinesweeperDifficulty, resume: boolean): void {
 	history.pushState(null, "");
 }
 
-function setLowFpsPupupDisplayed(): void {
+export function setLowFpsPupupDisplayed(): void {
 
 	localStorage.setItem(LOW_FPS_POPUP_STORAGE_KEY, "true");
 }
 
-function haveDisplayedLowFpsPopup(): boolean {
+export function haveDisplayedLowFpsPopup(): boolean {
 	
 	return localStorage.getItem(LOW_FPS_POPUP_STORAGE_KEY) !== null;
 }
@@ -222,7 +215,7 @@ function openMainMenu(): void {
 	headerComponent.renderGoBack(null, true);
 }
 
-function openTimesList(): void {
+export function openTimesList(): void {
 
 	changeMainComponent(timesComponent);
 	headerComponent.renderGoBack(openMainMenu);
@@ -236,7 +229,7 @@ export function openSettings(): void {
 	history.pushState(null, "");
 }
 
-function openAccessAccount(): void {
+export function openAccessAccount(): void {
 
 	changeMainComponent(accessAccountComponent);
 	headerComponent.renderGoBack(openSettings);
@@ -246,8 +239,8 @@ function openAccessAccount(): void {
 const headerComponent: HeaderComponent = new HeaderComponent(
 	$header,
 	{
-		changeSettings,
-		getSettings,
+		// changeSettings,
+		// getSettings,
 		refreshGameTheme: () => gameComponent?.refreshTheme(),
 	}
 );
@@ -257,52 +250,52 @@ const mainMenuComponent: MainMenuComponent = new MainMenuComponent(
 	{
 		startNewGame: (difficulty: MinesweeperDifficulty) => startGame(difficulty, false),
 		resumeGame: (difficulty: MinesweeperDifficulty) => startGame(difficulty, true),
-		checkSavedGameExists,
-		deleteSavedGame,
-		openTimesList,
-		openSettings,
-		getLastChosenDifficulty
+		// checkSavedGameExists,
+		// deleteSavedGame,
+		// openTimesList,
+		// openSettings,
+		// getLastChosenDifficulty
 	}
 );
 
 const timesComponent: TimesComponent = new TimesComponent(
 	$main,
 	{
-		getTimeRecords,
-		deleteTimeRecord,
-		getLastChosenDifficulty,
-		generateTimeRecords
+		// getTimeRecords,
+		// deleteTimeRecord,
+		// getLastChosenDifficulty,
+		// generateTimeRecords
 	}
 );
 
 const settingsComponent: SettingsComponent = new SettingsComponent(
 	$main,
 	{
-		openSignup: openAccessAccount,
-		isLoggedIn,
-		getSettings,
-		changeSettings,
-		resetDefaultSettings,
-		reloadSettings: openSettings,
-		openSettings,
-		logout,
-		syncData,
-		getTestAccountCredentials,
+		// openSignup: openAccessAccount,
+		// isLoggedIn,
+		// getSettings,
+		// changeSettings,
+		// resetDefaultSettings,
+		// reloadSettings: openSettings,
+		// openSettings,
+		// logout,
+		// syncData,
+		// getTestAccountCredentials,
 	}
 );
 
 const accessAccountComponent: AccessAccountComponent = new AccessAccountComponent(
 	$main,
 	{
-		openSettings,
-		getSettings,
-		SyncDataOnlyGet: syncDataOnlyGet,
-		setAuthTokens,
-		setDeviceID,
-		getDeviceID,
-		setTestAccountCredentials,
-		isTestAccountUsername,
-		logoutDevice,
+		// openSettings,
+		// getSettings,
+		// syncDataOnlyGet,
+		// setAuthTokens,
+		// setDeviceID,
+		// getDeviceID,
+		// setTestAccountCredentials,
+		// isTestAccountUsername,
+		// logoutDevice,
 	}
 );
 

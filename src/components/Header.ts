@@ -1,13 +1,12 @@
-import styles from "./Header.module.css";
-import getColorPaletteSVG from "../icons/ColorPalette";
 import getArrowBackSVG from "../icons/ArrowBack";
+import getColorPaletteSVG from "../icons/ColorPalette";
 import getMineSVG from "../icons/Mine";
 import Minesweeper from "../models/Minesweeper";
+import {changeSettings, getSettings} from "../models/Settings";
 import {getFormatedTime} from "../utils";
+import styles from "./Header.module.css";
 
 type HeaderProps = {
-	getSettings: () => GameSettings;
-	changeSettings: (newSettings: Partial<GameSettings>) => void;
 	refreshGameTheme: () => void;
 };
 
@@ -51,7 +50,7 @@ export default class HeaderComponent implements Component {
 	private getInitState(): HeaderState {
 
 		return {
-			settings: this.props.getSettings(),
+			settings: getSettings(),
 		};
 	}
 
@@ -172,7 +171,7 @@ export default class HeaderComponent implements Component {
 						$selectedPalletOption.classList.remove(styles.selected);
 						$selectedPalletOption = $palletOption;
 
-						this.props.changeSettings({"theme": i});
+						changeSettings({"theme": i});
 						this.props.refreshGameTheme();
 
 						$colorPalletContainer.classList.remove(styles.expanded);

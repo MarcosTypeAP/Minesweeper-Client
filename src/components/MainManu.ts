@@ -1,11 +1,13 @@
-import styles from "./MainManu.module.css";
-import getMineSVG from "../icons/Mine";
 import getLeftArrowSVG from "../icons/LeftArrow";
+import getListSVG from "../icons/List";
+import getMineSVG from "../icons/Mine";
 import getRightArrowSVG from "../icons/RightArrow";
 import getSettingsSVG from "../icons/Settings";
-import getListSVG from "../icons/List";
-import PopupComponent from "./Popup";
+import {getLastChosenDifficulty, openSettings, openTimesList} from "../main";
+import {checkSavedGameExists, deleteSavedGame} from "../models/Games";
 import {MinesweeperDifficulty} from "../models/Minesweeper";
+import styles from "./MainManu.module.css";
+import PopupComponent from "./Popup";
 
 export const MinesweeperDifficultyNames: string[] = [
 	"Easy",
@@ -14,6 +16,11 @@ export const MinesweeperDifficultyNames: string[] = [
 	"Huge",
 	"Extreme",
 ];
+
+type MainManuProps = {
+	startNewGame: (difficulty: MinesweeperDifficulty) => void;
+	resumeGame: (difficulty: MinesweeperDifficulty) => void;
+};
 
 type MainMenuState = {
 	currDifficulty: MinesweeperDifficulty;
@@ -24,16 +31,6 @@ type MainMenuDOMElements = {
 	rightArrow: HTMLButtonElement;
 	difficulties: HTMLDivElement;
 	resume: HTMLButtonElement;
-};
-
-type MainManuProps = {
-	startNewGame: (difficulty: MinesweeperDifficulty) => void;
-	resumeGame: (difficulty: MinesweeperDifficulty) => void;
-	checkSavedGameExists: (difficulty: MinesweeperDifficulty) => boolean;
-	deleteSavedGame: (difficulty: MinesweeperDifficulty) => void;
-	openTimesList: () => void;
-	openSettings: () => void;
-	getLastChosenDifficulty: () => MinesweeperDifficulty;
 };
 
 export default class MainMenuComponent implements Component {
@@ -58,7 +55,7 @@ export default class MainMenuComponent implements Component {
 	private getInitState(): MainMenuState {
 		
 		return {
-			currDifficulty: this.props.getLastChosenDifficulty(),
+			currDifficulty: getLastChosenDifficulty(),
 		};
 	}
 
@@ -131,7 +128,7 @@ export default class MainMenuComponent implements Component {
 			styles.large
 		);
 
-		if (this.props.checkSavedGameExists(this.state.currDifficulty) === false) {
+		if (checkSavedGameExists(this.state.currDifficulty) === false) {
 			$resume.classList.add(styles.hidden);
 			$resume.classList.add(styles.disabled);
 		}
@@ -168,12 +165,12 @@ export default class MainMenuComponent implements Component {
 
 	private handleOpenSettings = (): void => {
 
-		this.props.openSettings();
+		openSettings();
 	}
 
 	private handleOpenTimes = (): void => {
 
-		this.props.openTimesList();
+		openTimesList();
 	}
 
 	updateRender(): void {
@@ -198,13 +195,13 @@ export default class MainMenuComponent implements Component {
 
 		this.domElements.resume.classList.toggle(
 			styles.hidden,
-			this.props.checkSavedGameExists(this.state.currDifficulty) === false
+			checkSavedGameExists(this.state.currDifficulty) === false
 		);
 	}
 
 	private handleNewGame = (): void => {
 
-		if (this.props.checkSavedGameExists(this.state.currDifficulty)) {
+		if (checkSavedGameExists(this.state.currDifficulty)) {
 
 			const popupComponent: PopupComponent = new PopupComponent(
 				this.$root,
@@ -213,7 +210,7 @@ export default class MainMenuComponent implements Component {
 					buttonText1: "Cancel",
 					buttonText2: "New Game",
 					onClick2: () => {
-						this.props.deleteSavedGame(this.state.currDifficulty);
+						deleteSavedGame(this.state.currDifficulty);
 						this.handleNewGame();
 					},
 				}

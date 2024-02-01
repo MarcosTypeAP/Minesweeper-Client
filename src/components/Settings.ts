@@ -1,20 +1,12 @@
-import styles from "./Settings.module.css"
-import getMineSVG from "../icons/Mine"
-import getFlagSVG from "../icons/Flag"
-import getResetSVG from "../icons/Reset"
+import getFlagSVG from "../icons/Flag";
+import getMineSVG from "../icons/Mine";
+import getResetSVG from "../icons/Reset";
+import {openAccessAccount, openSettings, syncData} from "../main";
+import {getTestAccountCredentials, isLoggedIn, logout} from "../models/Auth";
+import {changeSettings, getSettings, resetDefaultSettings} from "../models/Settings";
+import styles from "./Settings.module.css";
 
-type SettingsProps = {
-	openSignup: () => void;
-	openSettings: () => void;
-	isLoggedIn: () => boolean;
-	logout: () => Promise<void>;
-	changeSettings: (newSettings: Partial<GameSettings>) => void;
-	getSettings: (getDefault?: boolean) => GameSettings;
-	resetDefaultSettings: () => void;
-	reloadSettings: () => void;
-	syncData: () => void;
-	getTestAccountCredentials: () => TestAccountCredentials | null;
-};
+type SettingsProps = {};
 
 type SettingsState = {
 };
@@ -53,7 +45,7 @@ export default class SettingsComponent implements Component {
 
 		this.clean();
 
-		const settings: GameSettings = this.props.getSettings();
+		const settings: GameSettings = getSettings();
 
 		this.$root.className = styles.settings;
 
@@ -66,13 +58,13 @@ export default class SettingsComponent implements Component {
 		const $accountButton: HTMLButtonElement = document.createElement("button");
 		$accountButton.className = styles.account_button;
 		$accountButton.classList.add(styles.section_button);
-		$accountButton.innerText = this.props.isLoggedIn() ? "LOGOUT" : "SIGN UP";
-		$accountButton.onclick = this.props.isLoggedIn() ? this.handleLogout : this.handleOpenSignup;
+		$accountButton.innerText = isLoggedIn() ? "LOGOUT" : "SIGN UP";
+		$accountButton.onclick = isLoggedIn() ? this.handleLogout : this.handleOpenSignup;
 
-		const testAccountCredentials: TestAccountCredentials | null = this.props.getTestAccountCredentials();
+		const testAccountCredentials: TestAccountCredentials | null = getTestAccountCredentials();
 		let $accountTestCredentials: HTMLElement | undefined = undefined;
 
-		if (testAccountCredentials && this.props.isLoggedIn()) {
+		if (testAccountCredentials && isLoggedIn()) {
 			$accountTestCredentials = document.createElement("code");
 			$accountTestCredentials.className = styles.account_test_credentials;
 			$accountTestCredentials.innerText = `username: ${testAccountCredentials.username}\npassword: ${testAccountCredentials.password}`;
@@ -92,7 +84,7 @@ export default class SettingsComponent implements Component {
 			"Choose whether you want to sync your local data with other devices. You must be logged in.",
 			this.createToggle("syncData", settings.syncData, (_, value) => {
 				if (value !== undefined && value) {
-					this.props.syncData();
+					syncData();
 				}
 			})
 		);
@@ -214,8 +206,8 @@ export default class SettingsComponent implements Component {
 
 	private handleResetSettings = (): void => {
 
-		this.props.resetDefaultSettings();
-		this.props.reloadSettings();
+		resetDefaultSettings();
+		openSettings();
 	}
 
 	private handleChangeDefaultActionToDig = (): void => {
@@ -227,7 +219,7 @@ export default class SettingsComponent implements Component {
 		this.domElements.defaultActionMineButton.classList.add(styles.on);
 		this.domElements.defaultActionFlagButton.classList.remove(styles.on);
 
-		this.props.changeSettings({defaultAction: "dig"});
+		changeSettings({defaultAction: "dig"});
 	}
 
 	private handleChangeDefaultActionToMark = (): void => {
@@ -239,7 +231,7 @@ export default class SettingsComponent implements Component {
 		this.domElements.defaultActionFlagButton.classList.add(styles.on);
 		this.domElements.defaultActionMineButton.classList.remove(styles.on);
 
-		this.props.changeSettings({defaultAction: "mark"});
+		changeSettings({defaultAction: "mark"});
 	}
 
 	private createToggle(
@@ -258,7 +250,7 @@ export default class SettingsComponent implements Component {
 		$toggle.onclick = (event: MouseEvent) => {
 			value = !value;
 			$toggle.classList.toggle(styles.on, value);
-			this.props.changeSettings({[property]: value});
+			changeSettings({[property]: value});
 			onClick && onClick(event, value);
 		};
 
@@ -297,7 +289,7 @@ export default class SettingsComponent implements Component {
 			$rangeInput.style.setProperty("--range-persentage", `${Math.round(currRangePersentage)}%`);
 		}
 		$rangeInput.onchange = (event: Event) => {
-			this.props.changeSettings({[settingProperty]: parseInt($rangeInput.value)});
+			changeSettings({[settingProperty]: parseInt($rangeInput.value)});
 			onChange && onChange(event);
 		};
 
@@ -357,13 +349,13 @@ export default class SettingsComponent implements Component {
 
 		this.domElements.accountButton.innerText = "SIGN UP";
 
-		this.props.logout();
-		this.props.openSettings();
+		logout();
+		openSettings();
 	}
 
 	private handleOpenSignup = (): void => {
 
-		this.props.openSignup();
+		openAccessAccount();
 	}
 
 	clean(): void {

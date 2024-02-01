@@ -1,5 +1,8 @@
+import {openSettings, syncDataOnlyGet} from "../main";
 import {makeRequest} from "../models/Api";
-import styles from "./AccessAccount.module.css"
+import {getDeviceID, isTestAccountUsername, logoutDevice, setAuthTokens, setDeviceID, setTestAccountCredentials} from "../models/Auth";
+import {getSettings} from "../models/Settings";
+import styles from "./AccessAccount.module.css";
 import PopupComponent, {PopupProps} from "./Popup";
 
 export type AccessMethod = "login" | "signup";
@@ -10,17 +13,7 @@ const SIGNUP_URL = API_URL + "/auth/signup";
 const LOGIN_URL = API_URL + "/auth/tokens";
 const TEST_ACCOUNT_URL = API_URL + "/auth/testaccount";
 
-type AccessAccountProps = {
-	openSettings: () => void;
-	getSettings: () => GameSettings;
-	SyncDataOnlyGet: () => void;
-	setAuthTokens: (accessToken: string | null, refreshToken: string | null) => void;
-	setDeviceID: (deviceID: number, username?: string) => void;
-	getDeviceID: (username?: string) => number | null;
-	setTestAccountCredentials: (username: string, password: string) => void;
-	isTestAccountUsername: (username: string) => boolean;
-	logoutDevice: (deviceID: number, username: string, password: string) => Promise<void>;
-};
+type AccessAccountProps = {};
 
 type AccessAccountState = {
 	accessMethod: AccessMethod;
@@ -65,7 +58,7 @@ export default class AccessAccountComponent implements Component {
 
 		return {
 			accessMethod: "signup",
-			settings: this.props.getSettings(),
+			settings: getSettings(),
 			testaccountTimeoutID: -1,
 		};
 	}
@@ -111,7 +104,7 @@ export default class AccessAccountComponent implements Component {
 		$passwordInput.classList.add(styles.input);
 		$passwordInput.type = "password";
 		$passwordInput.placeholder = "Password";
-		$passwordInput.onkeypress = (event: KeyboardEvent) => {
+		$passwordInput.onkeydown = (event: KeyboardEvent) => {
 			if (event.key === "Enter") {
 				if (this.state.accessMethod === "login") {
 					this.handleLogin();
@@ -242,12 +235,12 @@ export default class AccessAccountComponent implements Component {
 			return;
 		}
 
-		this.props.setTestAccountCredentials(response.data.username, response.data.password);
+		setTestAccountCredentials(response.data.username, response.data.password);
 
-		const currDeviceID: number | null = this.props.getDeviceID(response.data.username);
+		const currDeviceID: number | null = getDeviceID(response.data.username);
 
 		if (currDeviceID !== null) {
-			await this.props.logoutDevice(currDeviceID, response.data.username, response.data.password);
+			await logoutDevice(currDeviceID, response.data.username, response.data.password);
 		}
 
 		this.handleLogin(response.data.username, response.data.password);
@@ -461,7 +454,7 @@ export default class AccessAccountComponent implements Component {
 			password
 		};
 
-		const deviceID: number | null = this.props.getDeviceID(username);
+		const deviceID: number | null = getDeviceID(username);
 		const queryParams: string = deviceID !== null ? `?device_id=${deviceID}` : "";
 
 		this.setLoading(true);
@@ -488,18 +481,18 @@ export default class AccessAccountComponent implements Component {
 			return;
 		}
 
-		this.props.setAuthTokens(response.data.accessToken, response.data.refreshToken);
-		this.props.setDeviceID(response.data.deviceId, username);
+		setAuthTokens(response.data.accessToken, response.data.refreshToken);
+		setDeviceID(response.data.deviceId, username);
 		
-		if (this.props.isTestAccountUsername(username)) {
-			this.props.setTestAccountCredentials(username, password);
+		if (isTestAccountUsername(username)) {
+			setTestAccountCredentials(username, password);
 		}
 
 		if (this.state.settings.syncData) {
-			this.props.SyncDataOnlyGet();
+			syncDataOnlyGet();
 		}
 
-		this.props.openSettings();
+		openSettings();
 	}
 
 	private handleSignup = async (): Promise<void> => {

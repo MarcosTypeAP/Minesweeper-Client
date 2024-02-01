@@ -1,18 +1,15 @@
-import styles from "./Times.module.css"
 import getLeftArrowSVG from "../icons/LeftArrow"
 import getRightArrowSVG from "../icons/RightArrow"
 import getTrashSVG from "../icons/Trash"
-import {MinesweeperDifficultyNames} from "./MainManu"
-import {getFormatedTime} from "../utils"
-import PopupComponent from "./Popup"
+import {getLastChosenDifficulty} from "../main"
 import {MinesweeperDifficulty} from "../models/Minesweeper"
+import {deleteTimeRecord, generateTimeRecords, getTimeRecords} from "../models/TimeRecords"
+import {getFormatedTime} from "../utils"
+import {MinesweeperDifficultyNames} from "./MainManu"
+import PopupComponent from "./Popup"
+import styles from "./Times.module.css"
 
-type TimesProps = {
-	getTimeRecords: () => TimeRecord[];
-	deleteTimeRecord: (id: string) => Promise<boolean>;
-	getLastChosenDifficulty: () => MinesweeperDifficulty;
-	generateTimeRecords: (amount: number) => void;
-}
+type TimesProps = {};
 
 type TimesState = {
 	currDifficulty: MinesweeperDifficulty;
@@ -47,7 +44,7 @@ export default class TimesComponent implements Component {
 	private getInitState(): TimesState {
 
 		return {
-			currDifficulty: this.props.getLastChosenDifficulty(),
+			currDifficulty: getLastChosenDifficulty(),
 		};
 	}
 
@@ -121,7 +118,7 @@ export default class TimesComponent implements Component {
 
 		this.$root.appendChild($recordsScrollWrapper);
 
-		if (this.props.getTimeRecords().length === 0) {
+		if (getTimeRecords().length === 0) {
 			setTimeout(() => {
 				(new PopupComponent(this.$root, {
 					title: "No time records yet?",
@@ -129,7 +126,7 @@ export default class TimesComponent implements Component {
 					buttonText1: "Close",
 					buttonText2: "Generate",
 					onClick2: () => {
-						this.props.generateTimeRecords(20)
+						generateTimeRecords(20)
 						this.renderUpdate();
 					}
 				})).render()
@@ -156,7 +153,7 @@ export default class TimesComponent implements Component {
 
 		$records.innerHTML = '';
 
-		const records: TimeRecord[] = this.props.getTimeRecords()
+		const records: TimeRecord[] = getTimeRecords()
 			.filter((record) => record.difficulty === this.state.currDifficulty)
 			.sort((record1, record2) => record1.time - record2.time);
 
@@ -227,7 +224,7 @@ export default class TimesComponent implements Component {
 				buttonText1: "Cancel",
 				buttonText2: "Delete",
 				onClick2: async () => {
-					const hasError: boolean = await this.props.deleteTimeRecord(id);
+					const hasError: boolean = await deleteTimeRecord(id);
 
 					if (hasError) {
 						return;
