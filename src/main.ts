@@ -38,7 +38,7 @@ export async function syncDataOnlyGet(): Promise<void> {
 		updateTimeRecords(response.data.timeRecords);
 	}
 
-	if (response.data.game.length > 0) {
+	if (response.data.games.length > 0) {
 		updateSavedGames(response.data.games);
 	}
 }
