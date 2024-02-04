@@ -85,6 +85,7 @@ export default class SettingsComponent implements Component {
 			this.createToggle("syncData", settings.syncData, (_, value) => {
 				if (value !== undefined && value) {
 					syncData();
+					openSettings();
 				}
 			})
 		);
