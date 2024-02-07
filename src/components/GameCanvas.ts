@@ -219,6 +219,11 @@ export default class GameCanvasComponent implements Component {
 		this.state.shouldTapToBeginFade = true;
 	}
 
+	hasStartedGame(): boolean {
+
+		return this.state.shouldTapToBeginFade;
+	}
+
 	private initControls(): void {
 
 		if (!this.domElements) {

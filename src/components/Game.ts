@@ -510,7 +510,7 @@ export default class GameComponent implements Component {
 				return;
 			}
 
-			if (this.props.game.hasStarted()) {
+			if (this.state.gameCanvas.hasStartedGame()) {
 				this.state.shouldZoomAtStart = false;
 			}
 
