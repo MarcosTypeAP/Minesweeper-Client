@@ -83,7 +83,7 @@ export default class GameComponent implements Component {
 	private CANVAS_MAX_CELL_SIZE_FACTOR = 0.1;
 	private CANVAS_INIT_MARGIN_FACTOR = isMobile() ? 0.1 : 0.05;
 	private CANVAS_FINAL_MARGIN_FACTOR = 0.05;
-	private DRAGGING_THRESHOLD = window.innerWidth * 0.02;
+	private DRAGGING_THRESHOLD = isMobile() ? window.innerWidth * 0.02 : window.innerHeight * 0.005;
 	private ZOOMED_CELL_FACTOR = isMobile() ? 0.08 : 0.06;
 	private BOTTOM_BUTTONS_HEIGHT_FACTOR = 0.1;
 	private END_GAME_ZOOM_OUT_DURATION = 1500;
