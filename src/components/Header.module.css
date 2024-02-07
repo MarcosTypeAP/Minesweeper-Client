@@ -191,10 +191,12 @@
 	position: relative;
 	overflow-x: hidden;
 	border-radius: 20rem;
-	transition-duration: 300ms;
+	transition-duration: var(--expand-pallet-options-duration);
 	transition-property: width, max-width;
 	z-index: var(--square-separator-z-index);
 	background-color: var(--color-background);
+
+	--expand-pallet-options-duration: 300ms;
 
 	--pallet-option-size-1: calc(var(--header-content-height) * 0.6);
 	--pallet-option-size-2: calc(var(--header-content-height) * 0.8);
@@ -212,6 +214,20 @@
 .color_pallet_container.expanded .color_pallet {
 	background-color: var(--color-cells-normal);
 	color: var(--color-background);
+}
+
+.color_pallet_container:not(.expanded) .pallet_options {
+	animation: var(--expand-pallet-options-duration) forwards hide-pallet-options-when-contracted;
+}
+
+@keyframes hide-pallet-options-when-contracted {
+	0% {
+		visibility: visible;
+	}
+
+	100% {
+		visibility: hidden;
+	}
 }
 
 .color_pallet {
