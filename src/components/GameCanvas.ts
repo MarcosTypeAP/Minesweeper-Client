@@ -109,7 +109,8 @@ type GameCanvasState = {
 	tapToBeginAnimationTimeElapsed: number;
 	tapToBeginAnimationDuration: number;
 	areMinesRevelated: boolean;
-	settings: GameSettings
+	hasGameStarted: boolean;
+	settings: GameSettings;
 }
 
 type GameCanvasProps = {
@@ -157,6 +158,7 @@ export default class GameCanvasComponent implements Component {
 			tapToBeginAnimationTimeElapsed: 0,
 			tapToBeginAnimationDuration: 0,
 			areMinesRevelated: false,
+			hasGameStarted: false,
 			settings: getSettings(),
 		};
 	}
@@ -217,11 +219,12 @@ export default class GameCanvasComponent implements Component {
 
 		this.state.tapToBeginAnimationDuration = animationDuration;
 		this.state.shouldTapToBeginFade = true;
+		this.state.hasGameStarted = true;
 	}
 
-	hasStartedGame(): boolean {
+	hasGameStarted(): boolean {
 
-		return this.state.shouldTapToBeginFade;
+		return this.state.hasGameStarted;
 	}
 
 	private initControls(): void {
@@ -435,7 +438,7 @@ export default class GameCanvasComponent implements Component {
 
 	private drawTapToBegin(ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number, opacity: number): void {
 
-		const fontSize: number = canvasHeight * 0.05;
+		const fontSize: number = canvasHeight * 0.06;
 
 		const hexColor: string = colors.background;
 
@@ -532,6 +535,11 @@ export default class GameCanvasComponent implements Component {
 
 		ctx.fillStyle = colors.cellsNormal;
 		ctx.fillRect(0, 0, $canvas.width, $canvas.height);
+
+		if (!this.hasGameStarted()) {
+			this.drawTapToBegin(ctx, $canvas.width, $canvas.height, 1);
+			return;
+		}
 
 		const dugMine: CanvasGridCell | null = this.state.dugMine;
 
