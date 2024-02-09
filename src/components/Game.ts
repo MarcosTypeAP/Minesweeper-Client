@@ -862,6 +862,8 @@ export default class GameComponent implements Component {
 
 		this.props.renderMinesCounter(this.props.game);
 
+		this.displayActionToggle(true);
+
 		this.renderWinPopup(() => {
 			this.state.gameCanvas.revealMines();
 
