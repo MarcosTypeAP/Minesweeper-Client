@@ -1,10 +1,27 @@
 # Minesweeper-Client
 
+This classic puzzle game challenges you to clear a minefield without detonating any mines, all within a nice, clean UI.
+
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/MarcosTypeAP/Minesweeper-Client/blob/main/images/menu.png" />
+        </td>
+        <td>
+            <img src="https://github.com/MarcosTypeAP/Minesweeper-Client/blob/main/images/times.png" />
+        </td>
+        <td>
+            <img src="https://github.com/MarcosTypeAP/Minesweeper-Client/blob/main/images/won_game.png" />
+        </td>
+        <td>
+            <img src="https://github.com/MarcosTypeAP/Minesweeper-Client/blob/main/images/lost_game.png" />
+        </td>
+    </tr>
+</table>
+
 > ⚠️ This is the client-side repo that needs to be complemented by its server-side for all functionality to be available.
 
 > ⚠️ This game was (a little little bit) inspired by this mobile game: [Minesweeper - The Clean One](https://play.google.com/store/apps/details?id=ee.dustland.android.minesweeper)
-
-This classic puzzle game challenges you to clear a minefield without detonating any mines, all within a nice, clean UI.
 
 ## Live Demo
 
