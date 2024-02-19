@@ -60,14 +60,6 @@
 	border-color: var(--color-dug-mine-background);
 }
 
-/* .input.password_input { */
-	/* margin-bottom: 2rem; */
-/* } */
-
-.input.password_input:not(:placeholder-shown) {
-	padding: 0.8rem 1.5rem 1.2rem 1.5rem;
-}
-
 .input_error {
 	color: var(--color-dug-mine-background);
 	font-size: var(--font-size-3);
@@ -112,6 +104,38 @@
 		opacity: 1;
 		top: 0;
 	}
+}
+
+.password_input_div input.input.password_input {
+	padding-right: 4rem;
+	margin-bottom: 0;
+}
+
+.input.password_input:not(:placeholder-shown) {
+	padding: 0.8rem 1.5rem 1.2rem 1.5rem;
+}
+
+.password_input_div {
+	margin-bottom: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.password_input_div .eye {
+	color: var(--color-foreground);
+	position: absolute;
+	right: 1.4rem;
+	min-width: var(--password-eye-size);
+	min-height: var(--password-eye-size);
+	width: var(--password-eye-size);
+	height: var(--password-eye-size);
+	--password-eye-size: 2.2rem;
+}
+
+.password_input_div .eye.hidden {
+	display: none;
 }
 
 .bottom_part {

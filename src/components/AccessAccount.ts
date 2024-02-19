@@ -4,6 +4,8 @@ import {getDeviceID, isTestAccountUsername, logoutDevice, setAuthTokens, setDevi
 import {getSettings} from "../models/Settings";
 import styles from "./AccessAccount.module.css";
 import PopupComponent, {PopupProps} from "./Popup";
+import getEyeSVG from "../icons/Eye";
+import getEyeSlashSVG from "../icons/EyeSlash";
 
 export type AccessMethod = "login" | "signup";
 
@@ -99,6 +101,9 @@ export default class AccessAccountComponent implements Component {
 
 		this.$root.appendChild($password);
 
+		const $passwordInputDiv: HTMLDivElement = document.createElement("div");
+		$passwordInputDiv.className = styles.password_input_div;
+
 		const $passwordInput: HTMLInputElement = document.createElement("input");
 		$passwordInput.className = styles.password_input;
 		$passwordInput.classList.add(styles.input);
@@ -115,7 +120,29 @@ export default class AccessAccountComponent implements Component {
 			}
 		}
 
-		this.$root.appendChild($passwordInput);
+		$passwordInputDiv.appendChild($passwordInput);
+
+		const $passwordInputEye: SVGElement = getEyeSVG();
+		$passwordInputEye.classList.add(styles.eye);
+		$passwordInputEye.onclick = () => {
+			$passwordInput.setAttribute("type", "text");
+			$passwordInputEye.classList.add(styles.hidden);
+			$passwordInputEyeSlash.classList.remove(styles.hidden);
+		}
+
+		$passwordInputDiv.appendChild($passwordInputEye);
+
+		const $passwordInputEyeSlash: SVGElement = getEyeSlashSVG();
+		$passwordInputEyeSlash.classList.add(styles.eye, styles.hidden);
+		$passwordInputEyeSlash.onclick = () => {
+			$passwordInput.setAttribute("type", "password");
+			$passwordInputEyeSlash.classList.add(styles.hidden);
+			$passwordInputEye.classList.remove(styles.hidden);
+		}
+
+		$passwordInputDiv.appendChild($passwordInputEyeSlash);
+
+		this.$root.appendChild($passwordInputDiv);
 
 		const $passwordError: HTMLSpanElement = document.createElement("span");
 		$passwordError.classList.add(styles.input_error, styles.hidden);
