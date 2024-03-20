@@ -79,7 +79,7 @@ export default defineConfig({
 ```bash
 npm install
 npm run build
-# Build created in ./dist
+# The build output will be placed at ./dist
 npm run preview
 ```
 
