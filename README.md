@@ -25,7 +25,7 @@ This classic puzzle game challenges you to clear a minefield without detonating 
 
 ## Live Demo
 
-Deploy URL: https://mine-exploiter.vercel.app
+Deploy URL: https://minesweeper-ap.vercel.app
 
 ## Features
 
