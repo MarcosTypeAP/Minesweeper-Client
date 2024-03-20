@@ -1,6 +1,6 @@
 # Minesweeper-Client
 
-This classic puzzle game challenges you to clear a minefield without detonating any mines, all within a nice, clean UI.
+This classic puzzle game challenges you to clear a minefield without detonating any mines, all within a nice, clean UI written in vanilla TypeScript.
 
 <table>
     <tr>
