@@ -134,7 +134,7 @@ window.addEventListener("popstate", () => {
 });
 
 export function getLastChosenDifficulty(): MinesweeperDifficulty {
-	
+
 	const storedDifficulty: string | null = localStorage.getItem(LAST_DIFFICULTY_STORAGE_KEY);
 
 	if (!storedDifficulty) {
@@ -145,7 +145,7 @@ export function getLastChosenDifficulty(): MinesweeperDifficulty {
 }
 
 function saveLastChosenDifficulty(difficulty: MinesweeperDifficulty): void {
-	
+
 	localStorage.setItem(LAST_DIFFICULTY_STORAGE_KEY, difficulty.toString());
 }
 
@@ -189,7 +189,7 @@ export function setLowFpsPupupDisplayed(): void {
 }
 
 export function haveDisplayedLowFpsPopup(): boolean {
-	
+
 	return localStorage.getItem(LOW_FPS_POPUP_STORAGE_KEY) !== null;
 }
 
@@ -210,7 +210,7 @@ function getGame(difficulty: MinesweeperDifficulty, resume: boolean): Minesweepe
 }
 
 function openMainMenu(): void {
-	
+
 	changeMainComponent(mainMenuComponent);
 	headerComponent.renderGoBack(null, true);
 }

@@ -29,8 +29,8 @@ function isMobile(): boolean {
 
 type GameProps = {
 	game: Minesweeper;
-	renderTimeElapsed: (game: Minesweeper) => void;
-	renderMinesCounter: (game: Minesweeper) => void;
+	renderTimeElapsed: (game: Minesweeper | null, hide?: boolean) => void;
+	renderMinesCounter: (game: Minesweeper | null, hide?: boolean) => void;
 	renderStartNewGame: () => void;
 };
 
@@ -217,7 +217,7 @@ export default class GameComponent implements Component {
 		this.state.gameCanvas.clean();
 
 		this.state = this.getInitState();
-		
+
 		this.$root.innerHTML = '';
 		this.$root.className = '';
 	}
@@ -243,7 +243,14 @@ export default class GameComponent implements Component {
 				message: "Try lowering the resolution in settings.",
 				buttonText1: "Close",
 				buttonText2: "Go Settings",
-				onClick2: openSettings,
+				onClick2: () => {
+                    if (!this.props.game.hasEnded()) {
+                        saveGame(this.props.game, true);
+                    }
+                    openSettings();
+                    this.props.renderTimeElapsed(null, true);
+                    this.props.renderMinesCounter(null, true);
+                }
 			}
 		);
 
@@ -377,7 +384,7 @@ export default class GameComponent implements Component {
 	}
 
 	private zoomToCell(cellPos: GridCellPosition, duration: number): void {
-  
+
 		if (!this.domElements) {
 			return;
 		}
@@ -449,7 +456,7 @@ export default class GameComponent implements Component {
 	private getAvgPointersRadius(): number | null {
 
 		const currPointers: PointerEvent[] = this.state.currPointers;
-		
+
 		if (currPointers.length === 0) {
 			return null;
 		}
