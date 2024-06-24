@@ -19,7 +19,7 @@ This classic puzzle game challenges you to clear a minefield without detonating 
     </tr>
 </table>
 
-> ⚠️ This is the client-side repo that needs to be complemented by its server-side for all functionality to be available.
+> ⚠️ This is the client-side repo that needs to be complemented by its [server-side](https://github.com/MarcosTypeAP/Minesweeper-API) for all functionality to be available.
 
 > ⚠️ This game was (a little little bit) inspired by this mobile game: [Minesweeper - The Clean One](https://play.google.com/store/apps/details?id=ee.dustland.android.minesweeper)
 
