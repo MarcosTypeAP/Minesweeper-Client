@@ -375,7 +375,7 @@ export default class GameComponent implements Component {
 
 		if (button === 2) {
 
-			if (this.state.settings.vibration) {
+			if (this.state.settings.vibration && navigator.vibrate) {
 				navigator.vibrate(this.state.settings.vibrationIntensity);
 			}
 			this.handleMarkCell({row, col});
@@ -898,7 +898,7 @@ export default class GameComponent implements Component {
 		this.state.gameCanvas.revealMines(
 			dugMinePos,
 			() => {
-				if (this.state.settings.vibration) {
+				if (this.state.settings.vibration && navigator.vibrate) {
 					navigator.vibrate(this.state.settings.vibrationIntensity);
 				}
 			}

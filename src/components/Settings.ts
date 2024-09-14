@@ -161,28 +161,30 @@ export default class SettingsComponent implements Component {
 
 		this.$root.appendChild($cellsResolutionSection);
 
-		const $vibrationSection: HTMLElement = this.createSettingsSection(
-			"Vibration",
-			"Choose whether to enable vibration.",
-			this.createToggle("vibration", settings.vibration)
-		);
+        if (navigator.vibrate) {
+            const $vibrationSection: HTMLElement = this.createSettingsSection(
+                "Vibration",
+                "Choose whether to enable vibration.",
+                this.createToggle("vibration", settings.vibration)
+            );
 
-		this.$root.appendChild($vibrationSection);
+            this.$root.appendChild($vibrationSection);
 
-		const $vibrationIntensitySection: HTMLElement = this.createSettingsSection(
-			"Vibration Intensity",
-			"Adjust the vibration intensity of the secondary action and when you dig a mine.",
-			this.createRange("vibrationIntensity", settings.vibrationIntensity, 10, 400, 10, "ms", (event?: Event) => {
-				if (!event) {
-					return;
-				}
+            const $vibrationIntensitySection: HTMLElement = this.createSettingsSection(
+                "Vibration Intensity",
+                "Adjust the vibration intensity of the secondary action and when you dig a mine.",
+                this.createRange("vibrationIntensity", settings.vibrationIntensity, 10, 400, 10, "ms", (event?: Event) => {
+                    if (!event) {
+                        return;
+                    }
 
-				const $input: HTMLInputElement = event.currentTarget as HTMLInputElement;
-				navigator.vibrate(parseInt($input.value));
-			})
-		)
+                    const $input: HTMLInputElement = event.currentTarget as HTMLInputElement;
+                    navigator.vibrate(parseInt($input.value));
+                })
+            )
 
-		this.$root.appendChild($vibrationIntensitySection);
+            this.$root.appendChild($vibrationIntensitySection);
+        }
 
 		const $resetSettings: HTMLButtonElement = document.createElement("button");
 		$resetSettings.className = styles.reset_settings;
