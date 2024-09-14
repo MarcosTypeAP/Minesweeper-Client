@@ -238,11 +238,7 @@ export function openAccessAccount(): void {
 
 const headerComponent: HeaderComponent = new HeaderComponent(
 	$header,
-	{
-		// changeSettings,
-		// getSettings,
-		refreshGameTheme: () => gameComponent?.refreshTheme(),
-	}
+	{ refreshGameTheme: () => gameComponent?.refreshTheme() }
 );
 
 const mainMenuComponent: MainMenuComponent = new MainMenuComponent(
@@ -250,54 +246,14 @@ const mainMenuComponent: MainMenuComponent = new MainMenuComponent(
 	{
 		startNewGame: (difficulty: MinesweeperDifficulty) => startGame(difficulty, false),
 		resumeGame: (difficulty: MinesweeperDifficulty) => startGame(difficulty, true),
-		// checkSavedGameExists,
-		// deleteSavedGame,
-		// openTimesList,
-		// openSettings,
-		// getLastChosenDifficulty
 	}
 );
 
-const timesComponent: TimesComponent = new TimesComponent(
-	$main,
-	{
-		// getTimeRecords,
-		// deleteTimeRecord,
-		// getLastChosenDifficulty,
-		// generateTimeRecords
-	}
-);
+const timesComponent: TimesComponent = new TimesComponent($main, {});
 
-const settingsComponent: SettingsComponent = new SettingsComponent(
-	$main,
-	{
-		// openSignup: openAccessAccount,
-		// isLoggedIn,
-		// getSettings,
-		// changeSettings,
-		// resetDefaultSettings,
-		// reloadSettings: openSettings,
-		// openSettings,
-		// logout,
-		// syncData,
-		// getTestAccountCredentials,
-	}
-);
+const settingsComponent: SettingsComponent = new SettingsComponent($main, {});
 
-const accessAccountComponent: AccessAccountComponent = new AccessAccountComponent(
-	$main,
-	{
-		// openSettings,
-		// getSettings,
-		// syncDataOnlyGet,
-		// setAuthTokens,
-		// setDeviceID,
-		// getDeviceID,
-		// setTestAccountCredentials,
-		// isTestAccountUsername,
-		// logoutDevice,
-	}
-);
+const accessAccountComponent: AccessAccountComponent = new AccessAccountComponent($main, {});
 
 let gameComponent: GameComponent | null = null;
 
