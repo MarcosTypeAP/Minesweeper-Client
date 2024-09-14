@@ -99,7 +99,8 @@ export async function makeAuthRequest(
 }
 
 export function isLoggedIn(): boolean {
-
+    // TODO: no API
+    return false
 	return Boolean(accessToken);
 }
 
