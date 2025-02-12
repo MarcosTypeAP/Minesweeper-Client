@@ -10,8 +10,9 @@ import {isLoggedIn, makeAuthRequest, refreshTokens} from './models/Auth';
 import {changeSettings, getSettings} from './models/Settings';
 import {getTimeRecords, updateTimeRecords} from './models/TimeRecords';
 import {getSavedGame, getSavedGames, saveGame, updateSavedGames} from './models/Games';
-import {API_URL} from './models/Api';
+import {API_URL, makeRequest} from './models/Api';
 
+const HEALTH_CHECK_URL = API_URL + "/healthcheck"
 const SYNC_DATA_URL = API_URL + "/users/sync"
 
 const LAST_DIFFICULTY_STORAGE_KEY = "ms-last-difficulty";
@@ -259,8 +260,11 @@ let gameComponent: GameComponent | null = null;
 
 headerComponent.render();
 
-refreshTokens().then(() => {
+// Wake up the server
+const wakeupTimeoutID = setTimeout(() => alert('The server is sleeping right now, it may take up to 1 minute to wake up, please be patient :)'), 1000)
+makeRequest(HEALTH_CHECK_URL, 'GET').then(() => clearTimeout(wakeupTimeoutID))
 
+refreshTokens().then(() => {
 	history.pushState(null, "");
 
 	if (getSettings().syncData) {
